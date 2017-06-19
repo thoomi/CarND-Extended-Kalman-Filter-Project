@@ -64,6 +64,10 @@ public:
    */
   void UpdateEKF(const Eigen::VectorXd &z);
 
+    /**
+   * Returns the current state vector transformed into the polar coordinate system
+   */
+  Eigen::VectorXd GetStateInPolar();
 };
 
 #endif /* KALMAN_FILTER_H_ */
