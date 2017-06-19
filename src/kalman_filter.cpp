@@ -43,6 +43,12 @@ void KalmanFilter::Update(const VectorXd &z) {
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
   VectorXd z_pred = GetStateInPolar();
   VectorXd y = z - z_pred;
+
+  // Normalize angle
+  if(fabs(y(1) > M_PI)) {
+    y(1) = atan2(sin(y(1)), cos(y(1)));
+  }
+
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
   MatrixXd Si = S.inverse();
@@ -76,8 +82,6 @@ VectorXd KalmanFilter::GetStateInPolar() {
   if (fabs(px) > 0.001) {
     phi = atan2(py, px);
   }
-
-  std::cout << "PHI = " << phi << std::endl;
 
   VectorXd hx = VectorXd(3);
   hx(0) = range;
